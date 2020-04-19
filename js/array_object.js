@@ -1,13 +1,13 @@
 var students = [
     {
-        first_name: "nazish",
-        last_name: "fraz",
-        age: 25
+        first_name : "nazish",
+        last_name : "fraz",
+        age : 25
     },
     {
-        first_name: "aaqib",
-        last_name: "gouher",
-        age: 19
+        first_name : "aaqib",
+        last_name : "gouher",
+        age : 19
     }
 ];
 
