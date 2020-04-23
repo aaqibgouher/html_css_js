@@ -5,4 +5,4 @@ var index_of_is = str.indexOf("is");    /gives the first occurence index,we can 
 
 console.log(length);
 console.log(index_of_is);
-console.log(str.search("isi"));
+console.log(str.search("is"));   /gives the index correct if present, else gives -1/

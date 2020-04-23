@@ -13,12 +13,12 @@ var students = [
 
 console.log(students);
 console.log(students[1]);
-console.log(students[1]["first_name"]);
-console.log(students[1].first_name);
+console.log(students[1]["first_name"]);     /can also access the students array first_name object value/
+console.log(students[1].first_name);         /same as the above /
 
-students.forEach(function(value, index){
+students.forEach(function(value, index){    /foreach call back function /
     console.log(value);
-    for(obj in value){
-        console.log([obj, value[obj]]);
+    for(obj in value){              /loops through the property of an object/
+        console.log([obj, value[obj]]);         
     }
 })

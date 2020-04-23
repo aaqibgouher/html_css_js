@@ -1,66 +1,111 @@
-function length(){
-    var name = "Aaqib";
-    console.log(name.length);
+function reverse_num(str){ 
+    return str.split('').reverse().join('') 
+ }
+
+function new_num(rev_num_str,i){
+    if(i == rev_num_str.length-1) return rev_num_str[i]; 
+    else return reverse_num(rev_num_str[i].concat(rev_num_str[i+1]));
 }
 
-function index_of(){
-    var str = "My Name is Gouher";
-    console.log(str.indexOf("is"));
+function break_num(num_str){
+    var break_arr = [],i=0;
+    rev_num_str = reverse_num(num_str);
+    
+    for(i=0;i<rev_num_str.length;i++){
+        if(i != 2){
+            break_arr.push(new_num(rev_num_str,i));
+            i++;
+        }
+        else{
+            break_arr.push(rev_num_str[i]);
+        }
+    }
+    return break_arr.reverse();
+    // console.log(break_arr);
 }
 
-function last_index_of(){
-    var str = "You are good boy !";
-    console.log(str.lastIndexOf("boy"));
+
+function count_digit(n){
+    var str = n.toString();
+    return str.length;
 }
 
-function search_(){
-    var str = "I am going to home.";
-    var pos = str.search("to");         /it will return the index of match else return -1/ 
-    var pos1 = str.search("from");
-    console.log(pos);
-    console.log(pos1);
+function to_word(n){
+    var ones = {0:"zero",1:"one", 2:"two", 3:"three",4:"four",5:"five",6:"six",7:"seven",8:"eight",9:"nine"};
+    var tens = {10:"ten", 11:"eleven", 12:"twelve", 13:"thirteen", 14:"fourteen",15:"fifteen", 16:"sixteen", 17:"seventeen", 18:"eighteen", 19:"nineteen",20:"twenty", 30:"thirty", 40:"forty", 50:"fifty", 60:"sixty", 70:"seventy",80:"eighty", 90:"ninty"}
+    var hundred = {100:"Hundred"};
+    var i=0,j=0,str = "",x = 0,y = 0,str_1 = "",str_2 = "";
+    
+        if(count_digit(n) == 1){
+            return ones[n];
+        }
+        else if(count_digit(n) == 2){
+            i = 0;
+            for(i in tens){
+                if(i == n){
+                    return tens[i];
+                    break;
+                }
+                else{
+                    i = 0;
+                    str = n.toString();
+                    x = +(str[1]);
+                    y = +(str) - x;
+    
+                    for(i in tens){
+                        if(y == i){
+                            str_1 = tens[i];
+                            break;
+                        }
+                    }
+    
+                    for(j in ones){
+                        if(x == j){
+                            str_2 = ones[j];
+                        }
+                    }
+    
+                    return str_1.concat(" ",str_2);
+    
+                }
+            }
+        }
+        else{
+            i = 0;
+            for(i in hundred){
+                if(n == i){
+                    return hundred[i];
+                    break;
+                }
+            }
+        }
+        
+}
+    
+    // n = 99;
+    // var count = count_digit(n);
+    // var word = to_word(n);
+    
+
+
+var obj = {0:"zero",1:"one", 2:"two", 3:"three",4:"four",5:"five",6:"six",7:"seven",       8:"eight",9:"nine",10:"ten", 11:"eleven", 12:"twelve", 13:"thirteen", 14:"fourteen", 15:"fifteen", 16:"sixteen", 17:"seventeen", 18:"eighteen", 19:"nineteen", 20:"twenty", 30:"thirty", 40:"forty", 50:"fifty", 60:"sixty", 70:"seventy", 80:"eighty", 90:"ninty", 100:"hundred",1000:"thousand"};
+
+var no_Of_zero = {
+     3 : "thousand",2 : "hundred"
+};
+
+var num = 77512,i=0;
+var num_str = num.toString();
+
+var after_break = break_num(num_str);
+// console.log(after_break);  [ '12', '3', '45' ]
+var final = {};
+var count = 0;
+
+for(i=0;i<after_break.length;i++){
+    // count = count_digit(+(after_break[i]));
+    final[i] = to_word(+(after_break[i]));
+    console.log(final);
 }
 
-function slice_(){
-    var fruits = "Apple,Banana,Mango";
-    var buy = fruits.slice(6,12);          /if we will give positive index then,will take from start/
-    var buy1 = fruits.slice(-12,-6);       /if we will give -ve index then,will take from end/
-    console.log(buy);
-    console.log(buy1);
-}
-
-function substring_(){
-    var vehicles = "car,bike,cycle";
-    var buy = vehicles.substring(4,8);      /will not take -ve values/
-    console.log(buy);
-}
-
-function substr_(){
-    var clothes = "shirt,jeans,paint";
-    var buy = clothes.substr(6,5);      /first parameter will be the starting index and 2nd parameter will be the length of it /
-    var buy1 = clothes.substr(-5);      /can take -ve also but will take from end/
-    console.log(buy);
-    console.log(buy1);          
-}
-
-function replace_(){
-    var food = "pizza,burger,pani-puri,chaat,BURGER";
-    var buy = food.replace("burger","chicken-roll");    /1st para will which word, 2nd will to which word/
-    console.log(buy);
-}
-
-function to_upper(){
-    var str = "i am student.";
-    var str1 = str.toUpperCase();
-    console.log(str1);
-}
-
-length();       /this is the name of the function/
-index_of();
-last_index_of();    /gives index from last /
-search_();      /can search the indeax of first word if present /
-slice_();       /can extract from string/
-substring_();   /same as slice/
-substr_();      /same as slice/
-replace_();     /replaces the word from string but only first match/
-to_upper();
+// console.log(final);
