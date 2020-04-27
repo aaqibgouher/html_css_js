@@ -7,17 +7,14 @@ class Pizza{
 
     // this will take item object and add in a cart array
     add_item(item){
-            this.cart.push(item);
-        }
+        this.cart.push(item);
+    }
 
     // this will take item name and remove the item from cart
     remove_item(name){
-        this.temp_cart = [];
-        this.temp_cart = this.cart;
-        this.temp_cart = this.temp_cart.filter((value) => {
+        this.cart = this.cart.filter((value) => {
             return value.name != name;
         });
-        this.cart = this.temp_cart;
     }
 
     // this will print the invoice detail
