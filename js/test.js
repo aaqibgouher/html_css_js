@@ -1,13 +1,12 @@
-class Name{
-    constructor(x,y){
-        this.f_name = x;
-        this.l_name = y;
+var obj = [
+    {
+        name : "Aaqib",
+        age : 18
+    },
+    {
+        name : "Gouher",
+        age : 19
     }
-    get_full_name(){
-        return this.f_name+" "+this.l_name;
-    }
+];
 
-}
-
-var obj = new Name("Aaqib","Gouher");
-console.log(obj.get_full_name());
+console.log(`${obj[0].name} | ${obj[0].age}`);

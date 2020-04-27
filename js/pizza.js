@@ -1,21 +1,43 @@
 class Pizza{
     constructor(name){
-
+        this.cart = [];
+        this.user = name;
+        console.log(`Login by ${this.user}\n`);
     }
 
     // this will take item object and add in a cart array
     add_item(item){
-
-    }
+            this.cart.push(item);
+        }
 
     // this will take item name and remove the item from cart
     remove_item(name){
-
+        this.temp_cart = [];
+        this.temp_cart = this.cart;
+        this.temp_cart = this.temp_cart.filter((value) => {
+            return value.name != name;
+        });
+        this.cart = this.temp_cart;
     }
 
     // this will print the invoice detail
     get_cart(){
+        for(var i in this.cart){
+            console.log(`Item added - ${this.cart[i].name} | ${this.cart[i].qty} | ${this.cart[i].price}`);
+        }
+        console.log("\n");
+    }
 
+    invoice(){
+        var total_amnt = 0;
+        console.log("invoice");
+        console.log(`item   |   qty |   price   |   amount`);
+        for(var i in this.cart){
+            console.log(`${this.cart[i].name} | ${this.cart[i].qty} | ${this.cart[i].price} | ${this.cart[i].qty * this.cart[i].price}`);
+            total_amnt += this.cart[i].qty * this.cart[i].price;
+        }
+        console.log(`total amount = ${total_amnt}`);
+        console.log("\n");
     }
 }
 
@@ -36,8 +58,10 @@ p.add_item({
     price: 300
 });
 p.get_cart();
+p.invoice();
 p.remove_item("margaritha");
 p.get_cart();
+p.invoice();
 
 // login by nazish
 
