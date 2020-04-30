@@ -1,186 +1,136 @@
 class Auth{
-    
     constructor(){
-        this.info = [];
-        this.obj = {};
-        this.check_id = "";
-        this.check_password = "";
-        this.check_name = "";
+        this.users = [];
+        this.login_users = [];
     }
 
-    change(pass1,pass2){
-        for(var i of this.info){
-            if(i.user_id == this.check_id && i.user_password == pass1){
-                i.user_password = pass2;
+    validate(keys){
+        for(var key in keys){
+            var value = keys[key];
+            if(key == "email"){
+                if(!value) return "Email is required";
+                if(!/^([a-z0-9_\-\.]+)@gmail\.com$/g.test(value)) return "Invalid Email";
+            }
+            if(key == "password"){
+                if(!value) return "Password is required";
+                if(!/^[0-9_\-\.@]{6,12}$/g.test(value)) return "Invalid Password";
+            }
+            if(key == "full_name"){
+                if(!value) return "Full name is required";
             }
         }
     }
 
-    is_logged(email){
-        var flag = 0;
-        for(var i of this.info){
-            if(i.user_id == email){
-                if(i.is_login == 1){
-                    flag = 1;
-                }
-            }
-        }
-
-        if(flag) return true;
-        else return false;
+    is_email_exists(email){
+        var is_email_exists = this.users.filter((value) => {
+            return value.email == email
+        });
+        return is_email_exists.length ? true : false;
     }
 
-    is_match(email,password){
-        var flag = 0;
-        for(var i of this.info){
-            
-            if(i.user_id == email && i.user_password == password){
-                flag = 1;
-
-            }
-        }
-
-        if(flag) return true;
-        else return false;
-    }
-
-    is_registered(email){
-        var flag = 0;
-        for(var i of this.info){
-            if(i.user_id == email) flag = 1;
-        }
-
-        if(flag) return true;
-        else return false;
-    }
-
-    is_email(id){
-        var pattern = /^([a-z0-9_\-\.]+)@gmail\.com$/g;
-        return pattern.test(id);
-    }
-
-    is_password(password){
-        var pattern = /^[0-9_\-\.@]{6,12}$/g;
-        return pattern.test(password);
-    }
     // email should be valid
     // password length should be atleast 6 to atmost 12 and only alphanumeric
     // full_name should be max 20 char
     register(email, password, full_name){
-        this.check_id = email;
-        this.check_password = password;
-        this.check_name = full_name;
+        try{
+            var error = this.validate({
+                email: email,
+                password: password,
+                full_name: full_name
+            });
+            if(error) throw error;
 
-        if(this.is_email(this.check_id)){
-            if(this.is_password(this.check_password)){
-                if(this.is_registered(this.check_id)){
-                    console.log("user has already registered.");
-                }
-                else{
-                    this.obj = {
-                    user_id : email,
-                    user_password : password,
-                    user_name : full_name,
-                    is_login : 0
-                    };
-                    this.info.push(this.obj);
-                    console.log("Successfully registered..");
-                    // console.log(this.info);
-                }
-            }
-            else{
-                console.log("Correct password is required for registration..");
-            }
-        }
-        else{
-            console.log("Correct email is required for registration.");
+            if(this.is_email_exists(email)) throw "This email is already exists";
+
+            this.users.push({
+                email: email,
+                password: password,
+                full_name: full_name
+            });
+
+            console.log("Successfully register " + email);
+            // console.log(this.users);
+        }catch(e){
+            console.log(e)
         }
     }
 
     // email should be valid
     // password length should be atleast 6 to atmost 12 and only alphanumeric
     login(email, password){
+        try{
+            var error = this.validate({
+                email: email,
+                password: password
+            });
+            if(error) throw error;
 
-        this.check_id = email;
-        this.check_password = password;
+            if(!this.is_email_exists(email)) throw "Email does not exist. please register"
 
-        if(this.is_email(this.check_id)){
-            if(this.is_password(this.check_password)){
-                if(this.is_registered(this.check_id)){
-                    if(this.is_match(this.check_id,this.check_password)){
-                        console.log("Successfully logged in.");
-                        for(var i of this.info){
-                            if(i.user_id == email && i.user_password == password){
-                                i.is_login = 1;
-                            }
-                        }
-                        // console.log(this.info);
-                    }
-                    else{
-                        console.log("Incorrect email or password..");
-                    }
-                }
-                else{
-                    console.log("User does not exist.");
-                }
-            }
-            else{
-                console.log("Correct password is required..");
-            }
+            var user = this.users.filter((value) => {
+                return value.email == email && value.password == password
+            });
+            
+            if(!user.length) throw "Incorrect Password";
+
+            this.login_users.push(user[0]["email"]);
+            console.log("Login successfull as "+email);
+        }catch(e){
+            console.log(e)
         }
-        else{
-            console.log("Correct email is required.");
-        }
-
     }
     
 
     // password length should be atleast 6 to atmost 12 and only alphanumeric
-    change_password(old_password, new_password){
-        // console.log(`${this.check_id} = ${this.check_password}`);
-        if(this.is_logged(this.check_id)){
-            if(this.is_match(this.check_id,old_password)){
-                this.change(old_password,new_password);
-                console.log("Successfully changed..");
-            }
-            else{
-                console.log("Incorrect password..");
-            }
-        }
-        else{
-            console.log("user is not logged in. hence cant change the password.");
+    change_password(email, old_password, new_password){
+        try{
+            var error = this.validate({
+                password: new_password
+            });
+            if(error) throw error;
+
+            if(this.login_users.indexOf(email) == -1) throw "User is not logged in";
+            
+            var login_user_index;
+            var user = this.users.filter((value, index) => {
+                if(value.email == email && value.password == old_password) login_user_index = index;
+                return value.email == email && value.password == old_password
+            });
+            if(!user.length) throw "Old password is incorrect";
+            if(user[0].password == new_password) throw "Old password and new password cannot be same";
+
+            this.users[login_user_index]["password"] = new_password;
+            console.log("Password changed");
+        }catch(e){
+            console.log(e);
         }
     }
 
-    logout(){
-        for(var i of this.info){
-            if(i.user_id == this.check_id && i.user_password == this.change_password){
-                i.is_login = 0;
-            }
-        }
-
-        console.log("Successfully logged out..");
+    logout(email){
+        this.login_users = this.login_users.filter((value) => {
+            return value != email
+        });
+        console.log("Successfully logged out as "+email);
     }
 }
 
 var auth = new Auth();
 auth.login("", "");
-// email is required
+// // email is required
 auth.login("nfraz007@gmail.com", "123456");
-// user does not exist
-auth.change_password("123456", "12345678");
-// user is not logged in
+// // user does not exist
+auth.change_password("nfraz007@gmail.com", "123456", "12345678");
+// // user is not logged in
 auth.register("nfraz007@gmail.com", "123456", "Nazish Fraz");
-// successfully registered
-// auth.register("nfraz007@gmail.com", "123456", "Nazish Fraz");  
+// // successfully registered
 auth.register("aaqibgouher@gmail.com", "123456", "Aaqib Gouher"); 
-// successfully registered
+// // successfully registered
 auth.login("nfraz007@gmail.com", "12345678");
-// incorrect password
+// // incorrect password
 auth.login("nfraz007@gmail.com", "123456");
-// successfully logged in
-auth.change_password("123456", "1234567_");
-// successfully changed the password
-auth.logout();
-// successfully logged out
+// // successfully logged in
+auth.change_password("nfraz007@gmail.com", "123456", "123456");
+// // successfully changed the password
 auth.login("aaqibgouher@gmail.com", "123456");
+auth.logout("nfraz007@gmail.com");
+// // successfully logged out
