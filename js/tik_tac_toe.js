@@ -10,9 +10,15 @@ class TikTacToe{
         this.$x_count = 0;
         this.$0_count = 0;
     }
-
+   
     is_win(){
-        var all_possible =  
+        var all_possible =  [
+            [0,0,0,1,0,2],[1,0,1,1,1,2],[2,0,2,1,2,2],
+            [0,0,1,0,2,0],[0,1,1,1,2,1],[0,2,1,2,2,2],
+            [0,0,1,1,2,2],[0,2,1,1,2,0]
+        ];
+
+
     }
 
     is_index_exist(){
