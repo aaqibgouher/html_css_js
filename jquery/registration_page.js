@@ -23,10 +23,10 @@ $(document).ready(function(){
         else return false;
     }
 
-    function is_pass_same(pass){
+    function is_pass_same(id,pass){
         var flag = 0;
         for(var i of my_arr){
-            if(i.user_pass == pass) flag = 1;
+            if(i.user_email == id && i.user_pass == pass) flag = 1;
         }
 
         if(flag) return true;
@@ -80,7 +80,7 @@ $(document).ready(function(){
             if(! is_email(id)) throw "Correct Email is required.";
             if(! is_registered(id)) throw "Unable to Logg-in, User is not registered.";
             if(!pass) throw "Password is required.";
-            if(! is_pass_same(pass)) throw "Correct Password is required.";
+            if(! is_pass_same(id,pass)) throw "Correct Password is required.";
             if(id && pass){
 
                 $("#input9").val("");
